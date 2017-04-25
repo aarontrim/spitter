@@ -46,7 +46,7 @@
 				{% for followinger in user.account.follower_set.all %}
 				<div class="box following-item">
 				<img src="{% url 'getimage' followinger.followee.image_set.last.identifier %}" width="50px" height="50px">
-				<p class="follower-name"><a href="#">{{ followinger.followee.handle }}</a></p>
+				<p class="follower-name"><a href="{% url 'feed' followinger.followee.handle %}">{{ followinger.followee.handle }}</a></p>
 				<p class="follower-bio">{{ followinger.followee.biography }}</p>
 				</div>
 				{% endfor %}
@@ -55,7 +55,7 @@
 				{% for followers in user.account.followee_set.all %}
 				<div class="box following-item">
 				<img src="{% url 'getimage' followers.follower.image_set.last.identifier %}" width="50px" height="50px">
-				<p class="follower-name"><a href="#">{{ followers.follower.handle }}</a></p>
+				<p class="follower-name"><a href="{% url 'feed' followers.follower.handle %}">{{ followers.follower.handle }}</a></p>
 				<p class="follower-bio">{{ followers.follower.biography }}</p>
 				</div>
 				{% endfor %}
