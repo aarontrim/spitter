@@ -1,0 +1,26 @@
+{% load static %}
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="{% static '/css/simplegrid.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static '/css/style.css' %}">
+</head>
+<body>
+	<div id="navbar-container-big" class="col-1-1">
+		<div id="navbar" class="big">
+			<ul><li><a href="#" id="hhh">Home</a></li><li><a href="{% url 'discover' %}">Discover</a></li><li class="right"><a href="#">Logout</a></li></ul>
+		</div>
+	</div>
+	<div class="col-1-1">
+		<div id="signup" class="box">
+			<h1>Create a Spitter account!</h1>
+			<form action="{% url 'signup' %}" method="POST">
+				{% csrf_token %}
+				<table class="form-table">			
+					{{ form.as_table }}
+					<tr><td></td><td><input type="submit" class="btn" value="Sign Up!"/></td></tr>
+				</table>
+			</form>
+		</div>
+	</div>
+</body>
+</html>

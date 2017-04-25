@@ -1,0 +1,12 @@
+{% load static %}
+{% if error %}
+ERROR!
+{% else %}
+<div class="spitt">
+	<table><tr><td>
+		<img src="{% url 'getimage' image %}" height=50 width=50 /></td><td>				
+		<p class="text-smallgrey">{{ user.account.handle }} - {{ spitt.timeAgo }}</p>
+		<p class="text-16px">{{ spitt.content }}</p>
+	</td></tr></table>
+</div>
+{% endif %}

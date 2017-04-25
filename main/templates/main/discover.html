@@ -1,0 +1,25 @@
+{% load static %}
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="{% static '/css/simplegrid.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static '/css/style.css' %}">
+</head>
+<body>
+	<div id="navbar-container-big" class="col-1-1">
+		<div id="navbar" class="big">
+			<ul>{% if logged_as.pk %}<li><a href="{% url 'feed' logged_as.account.handle %}">Home</a></li><li class="text-smallgrey">Logged in as {{ logged_as.account.handle }}</li><li class="right"><a href="{% url 'logout' %}">Logout</a></li>{% else %}<li><a href="{% url 'index' %}">Home</a></li>{% endif %}</ul>
+		</div>
+	</div>
+	<div class="col-1-1">
+		<div id="login" class="box">
+			<h1>Discover new Spitters</h1>
+			{% for account in accounts %}
+				<div class="discover-user">
+					<img src="{% url 'getimage' account.image_set.last.identifier %}" height="50px" width="50px" />
+					<p><a href="{% url 'feed' account.handle %}">@{{ account.handle }}</a></p>
+				</div>
+			{% endfor %}
+		</div>
+	</div>
+</body>
+</html>

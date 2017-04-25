@@ -1,0 +1,95 @@
+{% load static %}
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="{% static 'css/normalise.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'css/simplegrid.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+</head>
+<body>
+<div id="body-content">
+	<div class="col-3-12"></div>
+	<div id="navbar-container" class="col-9-12">
+		<div id="navbar">
+			<ul><li><a href="{% url 'feed' logged_as.account.handle %}">Home</a></li><li><a href="{% url 'discover' %}">Discover</a></li><li class="text-smallgrey">Logged in as {{ logged_as.account.handle }}</li><li class="right"><a href="{% url 'logout' %}">Logout</a></li></ul>
+		</div>
+		<div id="banner" class="col-1-1">		
+		</div>
+		<div id="statusbar" class="col-1-1">
+			<ul><span id="statusbar-links"><li><a id="status-spitt" href="#">Spitts<br/>{{user.account.spitt_set.count}}</a></li><li><a id="status-followers" href="#">Followers<br/>{{user.account.followee_set.count}}</a></li><li><a id="status-following" href="#">Following<br/>{{user.account.follower_set.count}}</a></li></span></ul>
+		</div>
+	</div>
+	<div id="postheader">
+		<div id="sidebar" class="col-3-12">
+			<a href="#" id="profileimage-link"><img id="profileimage-img" src="{% url 'getimage' image %}"></a>
+			<p id="user-handle-my">@{{ user.account.handle }}</p>
+			<p id="user-bio-my">{{ user.account.biography }}</p>
+			<form id="user-bio-form" action="{% url 'feed_ajax_bio' logged_as.account.handle %}" method="POST">
+			{% csrf_token %}
+			<textarea type="text" id="user-bio-text" name="userbio">{{ user.account.biography }}</textarea>
+			</form>
+		</div>
+		<div id="main" class="col-9-12">
+			<div id="spittbox" class="box">
+				<form id="spittbox-form" action="{% url 'feed_ajax_spitt' logged_as.account.handle %}" method="POST">
+					{% csrf_token %}
+					<textarea id="spittbox-text" name="spittboxtext" placeholder="Type here..." maxlength="150"></textarea>
+				</form>
+				<br/>
+				<a href="#" id="spitt-submit" class="btn">Spitt</a>
+				<span id="charcounter">0/150</span>
+			</div>
+			<div id="feed" class="box">
+				{% for spitt in spitts %}
+				<div class="spitt">
+					<table><tr><td>
+						<img src="{% url 'getimage' spitt.owner.image_set.last.identifier %}" height=50 width=50 /></td><td>				
+						<p class="text-smallgrey"><a href="{% url 'feed' spitt.owner.handle %}">@{{ spitt.owner.handle }}</a> - {{ spitt.timeAgo }}</p>
+						<p class="text-16px">{{ spitt.content }}</p>
+					</td></tr></table>
+				</div>
+				{% endfor %}
+				
+				<div id="feed-bottom">
+					<p><a href="#">Back to top</a></p>
+				</div>
+			</div>
+			<div id="following">
+				{% for followinger in user.account.follower_set.all %}
+				<div class="box following-item">
+				<img src="{% url 'getimage' followinger.followee.image_set.last.identifier %}" width="50px" height="50px">
+				<p class="follower-name"><a href="{% url 'feed' followinger.followee.handle %}">{{ followinger.followee.handle }}</a></p>
+				<p class="follower-bio">{{ followinger.followee.biography }}</p>
+				</div>
+				{% endfor %}
+			</div>
+			<div id="followers">
+				{% for followers in user.account.followee_set.all %}
+				<div class="box following-item">
+				<img src="{% url 'getimage' followers.follower.image_set.last.identifier %}" width="50px" height="50px">
+				<p class="follower-name"><a href="{% url 'feed' followers.follower.handle %}">@{{ followers.follower.handle }}</a></p>
+				<p class="follower-bio">{{ followers.follower.biography }}</p>
+				</div>
+				{% endfor %}
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="overlay">
+	<div id="upload-window" class="box">
+		<h2>Upload new profile picture</h2>
+		<a id="profile-image-upload-link"><img id="profile-image-upload" src="{% url 'getimage' image %}" /></a><br/>
+		<a id="profile-done" href="#">Done</a>
+		<form action="{% url 'feed_ajax_img' logged_as.account.handle %}" id='profile-image-form' method="POST" enctype="multipart/form-data">
+			{% csrf_token %}
+			<input id="profile-image-file" type="file" name="imagefile" />
+		</form>
+	</div>
+</div>
+</body>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.1/jquery.form.min.js" integrity="sha384-tIwI8+qJdZBtYYCKwRkjxBGQVZS3gGozr3CtI+5JF/oL1JmPEHzCEnIKbDbLTCer" crossorigin="anonymous"></script>
+<script src="{% static 'js/events.js' %}"></script>
+
+</html>
