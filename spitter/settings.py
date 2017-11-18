@@ -27,7 +27,8 @@ with open("/etc/secret_key", "r") as f:
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['aarontrim.com', 'spitter.aarontrim.com']
+#ALLOWED_HOSTS = ['aarontrim.com', 'spitter.aarontrim.com']
+ALLOWED_HOSTS = ['127.0.0.1']
 
 
 # Application definition
@@ -85,16 +86,16 @@ DATABASES = {
 }
 
 #PSQL for deployment (comment out when dev-ing)
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'spitter',
-        'USER': 'webworker',
-        'PASSWORD': 'letwebworkerinplease!',
-        'HOST': 'localhost',
-        'PORT': '',
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'spitter',
+#         'USER': os.environ['psql_user'],
+#         'PASSWORD': os.environ['psql_pwd'],
+#         'HOST': 'localhost',
+#         'PORT': '',
+#     }
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/1.10/ref/settings/#auth-password-validators
@@ -133,3 +134,4 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
 STATIC_URL = '/static/'
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "main", "static")]

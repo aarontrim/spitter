@@ -16,7 +16,7 @@ class account(models.Model):
 	
 class spitt(models.Model):
 	content = models.CharField(max_length=150)
-	owner = models.ForeignKey(account)
+	owner = models.ForeignKey(account, on_delete=models.CASCADE)
 	time_pub = models.DateTimeField(default=datetime.datetime.now, blank=True)
 
 	def __str__(self):
@@ -28,14 +28,14 @@ class spitt(models.Model):
 class image(models.Model):
 	identifier = models.CharField(max_length=200, default='default.png')
 	date_uploaded = models.DateTimeField(default=datetime.datetime.now, blank=True)
-	usr = models.ForeignKey(account)
+	usr = models.ForeignKey(account, on_delete=models.CASCADE)
 
 	def __str__(self):
 		return str(self.usr) + " img"
 
 class accFollowing(models.Model):
-	follower = models.ForeignKey(account, related_name="follower_set")
-	followee = models.ForeignKey(account, related_name="followee_set")
+	follower = models.ForeignKey(account, related_name="follower_set", on_delete=models.CASCADE)
+	followee = models.ForeignKey(account, related_name="followee_set", on_delete=models.CASCADE)
 
 	def __str__(self):
 		return str(self.follower) + " => " + str(self.followee)
